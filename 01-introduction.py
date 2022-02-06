@@ -1,3 +1,14 @@
+
+# start with demo of csv module
+import csv
+with open("users.csv") as f:
+    users_from_csv = list(csv.DictReader(f.readlines()))
+
+print('users', users_from_csv)
+
+
+# actually use these copypastad bc int ids.
+
 users = [
     {"id": 0, "name": "Hero"},
     {"id": 1, "name": "Dunn"},
@@ -10,6 +21,7 @@ users = [
     {"id": 8, "name": "Kate"},
     {"id": 9, "name": "Klein"},
 ]
+print('missing', [x for x in users2 if x not in users])
 
 friendship_pairs = [
     (0, 1),
@@ -25,10 +37,3 @@ friendship_pairs = [
     (7, 8),
     (8, 9),
 ]
-
-with open("users.csv", "w") as f:
-    f.write("id,name\n")
-    f.write("\n".join(str(u["id"]) + "," + u["name"] for u in users))
-
-with open("friendship_pairs.csv", "w") as f:
-    f.write("\n".join(f"{u1},{u2}" for u1, u2 in friendship_pairs))
