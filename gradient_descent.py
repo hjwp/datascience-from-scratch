@@ -22,12 +22,48 @@ def partial_difference_quotient(
     epsilon: float,
 ) -> float:
     """
-    returns the "gradient" at the point along f with value=input_vector
+    returns the "partial gradient" at the point along f with value=input_vector
     with respect to the nth parameter where n=parameter_no
     """
     incremented_vector = input_vector.copy()
     incremented_vector[parameter_no] = incremented_vector[parameter_no] + epsilon
     return (f(incremented_vector) - f(input_vector)) / epsilon
+
+
+def estimate_gradient(
+    f: Callable[[Vector], float],
+    input_vector: Vector,
+    epsilon: float,
+) -> Vector:
+    """
+    estimate the gradeint at the given point
+    """
+    all_parameter_numbers = range(len(input_vector))
+    return [
+        partial_difference_quotient(
+            f, parameter_no, input_vector=input_vector, epsilon=epsilon
+        )
+        for parameter_no in all_parameter_numbers
+    ]
+
+
+def test_estimate_gradient():
+    # gradient of a multidemnsional function, ie one that takes a vector,
+    # should itself be a vector
+
+    # partial gradient of f(x^2 + y^2)  should be 2x wrt x and 2y wrt y
+    def sum_of_two_squares(v: Vector) -> float:
+        x, y = v
+        return x**2 + y**2
+
+    # eg gradient of f(x^2 + y^2) at x should be 2x = 6, and at y should be 4
+    x = 3
+    y = 2
+    expected = [6, 4]
+
+    assert estimate_gradient(
+        f=sum_of_two_squares, input_vector=[x, y], epsilon=0.001
+    ) == pytest.approx(expected, abs=0.001)
 
 
 def test_partial_difference_quotient():
@@ -68,8 +104,3 @@ def test_difference_quotient():
         return 2 * x
 
     assert difference_quotient(f, x=1, epsilon=0.001) == pytest.approx(2)
-
-
-def test_sum_of_squares():
-    assert sum_of_squares([2, 2]) == 8
-    assert sum_of_squares([3, 3, 3]) == 27
