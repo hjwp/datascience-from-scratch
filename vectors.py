@@ -35,6 +35,8 @@ def vector_sum(vectors: List[Vector]) -> Vector:
         for i in range(vector_length)
     ]
 
+def multiply(v: Vector, scalar: float) -> Vector:
+    return [i * scalar for i in v]
 
 def test_add():
     v1 = [1, 2]
@@ -56,3 +58,4 @@ def test_sum():
     assert vector_sum(vectors) == [15, 18, 22]
     vectors = [v1, v2]
     assert vector_sum(vectors) == [5, 7, 10]
+

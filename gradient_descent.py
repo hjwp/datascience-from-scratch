@@ -1,7 +1,8 @@
 from typing import Callable
 import pytest
-from vectors import Vector
+from vectors import Vector, add, multiply
 
+MultivariateFunction = Callable[[Vector], float]
 
 def sum_of_squares(v: Vector) -> float:
     return sum([i**2 for i in v])
@@ -16,7 +17,7 @@ def difference_quotient(
 
 
 def partial_difference_quotient(
-    f: Callable[[Vector], float],
+    f: MultivariateFunction,
     parameter_no: int,
     input_vector: Vector,
     epsilon: float,
@@ -31,7 +32,7 @@ def partial_difference_quotient(
 
 
 def estimate_gradient(
-    f: Callable[[Vector], float],
+    f: MultivariateFunction,
     input_vector: Vector,
     epsilon: float,
 ) -> Vector:
@@ -45,6 +46,30 @@ def estimate_gradient(
         )
         for parameter_no in all_parameter_numbers
     ]
+
+
+def gradient_descent(
+    f: MultivariateFunction,
+    starting_vector: Vector,
+) -> Vector:
+    new_position = starting_vector
+    standard_step_scaling_factor = -0.1
+    for epoch in range(1000):
+        print(f"Epoch {epoch}, position {new_position}")
+        gradient = estimate_gradient(f, new_position, epsilon=0.001)
+        step = multiply(gradient, standard_step_scaling_factor)
+        new_position = add(new_position, step)
+    return new_position
+
+
+def test_gradient_descent():
+    # gradient descent on f(x^2 + y^2) should equal [0, 0]
+    def sum_of_two_squares(v: Vector) -> float:
+        x, y = v
+        return x**2 + y**2
+
+    expected = [0, 0]
+    assert gradient_descent(f=sum_of_two_squares, starting_vector=[3, 2]) == pytest.approx(expected, abs=0.001)
 
 
 def test_estimate_gradient():
