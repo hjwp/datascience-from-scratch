@@ -59,3 +59,8 @@ def test_sum():
     vectors = [v1, v2]
     assert vector_sum(vectors) == [5, 7, 10]
 
+
+def dot(v: Vector, w: Vector) -> float:
+    """Computes v_1 * w_1 + ... + v_n * w_n"""
+    assert len(v) == len(w), "vectors must be same length"
+    return sum(v_i * w_i for v_i, w_i in zip(v, w))
