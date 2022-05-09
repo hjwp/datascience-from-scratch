@@ -4,6 +4,7 @@ from vectors import Vector, add, multiply
 
 MultivariateFunction = Callable[[Vector], float]
 
+
 def sum_of_squares(v: Vector) -> float:
     return sum([i**2 for i in v])
 
@@ -48,6 +49,11 @@ def estimate_gradient(
     ]
 
 
+def gradient_step(v: Vector, gradient: Vector, step_size: float) -> Vector:
+    step = multiply(gradient, step_size)
+    return add(v, step)
+
+
 def gradient_descent(
     f: MultivariateFunction,
     starting_vector: Vector,
@@ -57,8 +63,9 @@ def gradient_descent(
     for epoch in range(1000):
         print(f"Epoch {epoch}, position {new_position}")
         gradient = estimate_gradient(f, new_position, epsilon=0.001)
-        step = multiply(gradient, standard_step_scaling_factor)
-        new_position = add(new_position, step)
+        new_position = gradient_step(
+            new_position, gradient, step_size=standard_step_scaling_factor
+        )
     return new_position
 
 
@@ -69,7 +76,9 @@ def test_gradient_descent():
         return x**2 + y**2
 
     expected = [0, 0]
-    assert gradient_descent(f=sum_of_two_squares, starting_vector=[3, 2]) == pytest.approx(expected, abs=0.001)
+    assert gradient_descent(
+        f=sum_of_two_squares, starting_vector=[3, 2]
+    ) == pytest.approx(expected, abs=0.001)
 
 
 def test_estimate_gradient():

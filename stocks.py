@@ -38,8 +38,6 @@ def load_csv_objects() -> List:
             opening_price=raw_row["Open"],
             closing_price=raw_row["Close"],
         )
-        if True:
-            stock.opening_price = stock.opening_price * 2
         results.append(stock)
     return results
 

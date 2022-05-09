@@ -21,7 +21,7 @@ users = [
     {"id": 8, "name": "Kate"},
     {"id": 9, "name": "Klein"},
 ]
-print('missing', [x for x in users2 if x not in users])
+print('missing', [x for x in users if x not in users])
 
 friendship_pairs = [
     (0, 1),

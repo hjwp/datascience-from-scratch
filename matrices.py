@@ -20,4 +20,4 @@ def test_matrix_addition():
     ])
     print("expected", expected)
 
-    assert np.equal(result, expected)
+    assert np.equal(result, expected).all()
