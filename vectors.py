@@ -1,3 +1,4 @@
+import math
 from typing import List, Union
 
 
@@ -64,3 +65,7 @@ def dot(v: Vector, w: Vector) -> float:
     """Computes v_1 * w_1 + ... + v_n * w_n"""
     assert len(v) == len(w), "vectors must be same length"
     return sum(v_i * w_i for v_i, w_i in zip(v, w))
+
+def distance(v: Vector, w: Vector) -> float:
+    return math.sqrt(sum(item ** 2 for item in subtract(v, w)))
+
