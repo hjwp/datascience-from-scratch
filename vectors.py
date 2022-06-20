@@ -63,9 +63,17 @@ def test_sum():
 
 def dot(v: Vector, w: Vector) -> float:
     """Computes v_1 * w_1 + ... + v_n * w_n"""
-    assert len(v) == len(w), "vectors must be same length"
+    assert len(v) == len(w), f"vectors must be same length ({len(v)} != {len(w)})"
     return sum(v_i * w_i for v_i, w_i in zip(v, w))
 
 def distance(v: Vector, w: Vector) -> float:
     return math.sqrt(sum(item ** 2 for item in subtract(v, w)))
 
+def scalar_multiply(c: float, v: Vector) -> Vector:
+    """Multiplies every element by c"""
+    return [c * v_i for v_i in v]
+
+def vector_mean(vectors: List[Vector]) -> Vector:
+    """Computes the element-wise average"""
+    n = len(vectors)
+    return scalar_multiply(1/n, vector_sum(vectors))

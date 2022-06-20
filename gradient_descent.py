@@ -38,7 +38,7 @@ def estimate_gradient(
     epsilon: float,
 ) -> Vector:
     """
-    estimate the gradeint at the given point
+    estimate the gradient at the given point
     """
     all_parameter_numbers = range(len(input_vector))
     return [
