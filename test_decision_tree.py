@@ -1,5 +1,6 @@
 from decision_tree import (
     class_probabilities,
+    classify,
     entropy,
     data_entropy,
     partition_by,
@@ -59,7 +60,6 @@ candidates = [
     Candidate('Mid',    'Java',   True,  False, True),
     Candidate('Junior', 'Python', False, True,  False),
 ]
-# fmt: on
 
 
 def test_partition_by():
@@ -86,10 +86,34 @@ def test_partition_by():
         ],
     }
 
+# fmt: on
 
-def TODOtest_partition_entropy():
-    pass
+tree = {
+    "level": {
+        "Mid": True,
+        "Senior": {
+            "tweets": {
+                True: True,
+                False: False,
+            },
+        },
+        "Junior": {
+            "phd": {
+                False: True,
+                True: False,
+            }
+        },
+    },
+}
 
 
-def TODOtest_partition_entropy_by():
-    pass
+def test_classify_against_existing_data():
+    for candidate in candidates:
+        assert classify(tree, candidate) == candidate.did_well
+
+
+def test_classify_against_new_inputs():
+    new_candidate = Candidate("Senior", "R", tweets=False, phd=True, did_well=None)
+    assert classify(tree, new_candidate) == False
+    new_candidate = Candidate("Junior", "R", tweets=False, phd=False, did_well=None)
+    assert classify(tree, new_candidate) == True
